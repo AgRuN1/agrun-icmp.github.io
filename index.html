@@ -13,12 +13,18 @@
           <thead>
             <tr>
               <td>Название</td>
+              <td>Контест</td>
               <td>Язык</td>
               <td>Теги</td>
             </tr>
           </thead>
           <tr v-for="t in tasks">
             <td>{{ t.problem.name }}</td>
+            <td>
+              <a v-bind:href="`https://codeforces.com/${t.problem.rating ? 'contest' : 'gym'}/${t.problem.contestId}`" target="_blank">
+                {{ t.problem.contestId }}
+              </a>
+            </td>
             <td>{{ t.programmingLanguage }}</td>
             <td>{{ t.problem.tags.length ? t.problem.tags.join(', ') : ' - ' }}</td>
           </tr>
