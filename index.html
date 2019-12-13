@@ -8,7 +8,7 @@
   </head>
   <body>
   <div class="container">
-        <h1 class="text-center">Мои решенные задачи:</h1>
+        <h1 class="text-center">Последние решенные задачи:</h1>
         <table id="app" class="table">
           <thead>
             <tr>
@@ -16,17 +16,19 @@
               <td>Контест</td>
               <td>Язык</td>
               <td>Теги</td>
+              <td>Дата</td>
             </tr>
           </thead>
           <tr v-for="t in tasks">
             <td>{{ t.problem.name }}</td>
             <td>
-              <a v-bind:href="`https://codeforces.com/${t.problem.rating ? 'contest' : 'gym'}/${t.problem.contestId}`" target="_blank">
+              <a v-bind:href="getLink(t.problem)" target="_blank">
                 {{ t.problem.contestId }}
               </a>
             </td>
             <td>{{ t.programmingLanguage }}</td>
             <td>{{ t.problem.tags.length ? t.problem.tags.join(', ') : ' - ' }}</td>
+            <td>{{ getDate(t.creationTimeSeconds) }}</td>
           </tr>
         </table>
   </div>
@@ -42,7 +44,7 @@
       },
       created: function(){
         this.query();
-        setInterval(this.query.bind(this), 5 * 1000);
+        setInterval(this.query.bind(this), 30 * 1000);
       },
       methods: {
         update(data){
@@ -62,6 +64,15 @@
           $.ajax('https://codeforces.com/api/user.status?handle=blackmart&from=1&count=100')
           .done(data => this.update(data['result']))
           .fail(err => { console.log(err) });
+        },
+        getLink(problem){
+          return `https://codeforces.com/${problem.rating ? 'contest' : 'gym'}/${problem.contestId}`;
+        },
+        getDate(sec){
+          var opt = v => v < 10 ? '0' + v : v;
+          var d = new Date(sec * 1000);
+          var day = opt(d.getDay()), month = opt(d.getMonth()), hours = opt(d.getHours()), mins = opt(d.getMinutes());
+          return `${day}.${month}.${d.getFullYear()} ${hours}:${mins}`;
         }
       }
     });
