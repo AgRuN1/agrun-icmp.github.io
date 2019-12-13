@@ -71,7 +71,7 @@
         getDate(sec){
           var opt = v => v < 10 ? '0' + v : v;
           var d = new Date(sec * 1000);
-          var day = opt(d.getDay()), month = opt(d.getMonth()), hours = opt(d.getHours()), mins = opt(d.getMinutes());
+          var day = opt(d.getDay() + 1), month = opt(d.getMonth()), hours = opt(d.getHours()), mins = opt(d.getMinutes());
           return `${day}.${month}.${d.getFullYear()} ${hours}:${mins}`;
         }
       }
