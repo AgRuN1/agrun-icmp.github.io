@@ -31,7 +31,7 @@
             <td>{{ getDate(t.creationTimeSeconds) }}</td>
           </tr>
         </table>
-        <h2 class="text-warning text-center" v-if="tasks.length == 0">Ничего не найдено</h2>
+        <h2 class="text-warning text-center" v-if="tasks.length == 0 && inited">Ничего не найдено</h2>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -40,7 +40,8 @@
       el: '#app',
       data: {
         tasks: [],
-        username: 'blackmart'
+        username: 'blackmart',
+        inited: false
       },
       created: function(){
         var req = /handle=(\w*)/.exec(location.search);
@@ -61,6 +62,7 @@
             }
           }
           this.tasks = tasks;
+          this.inited = 1;
         },
         query(){
           $.ajax(`https://codeforces.com/api/user.status?handle=${this.username}&from=1&count=100`)
