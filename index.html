@@ -33,7 +33,7 @@
         </table>
         <h2 class="text-warning text-center" v-if="tasks.length == 0 && inited">Ничего не найдено</h2>
   </div>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script>
     var app = new Vue({
@@ -65,9 +65,9 @@
           this.inited = 1;
         },
         query(){
-          $.ajax(`https://codeforces.com/api/user.status?handle=${this.username}&from=1&count=100`)
-          .done(data => this.update(data['result']))
-          .fail(err => { console.log(err) });
+          axios.get(`https://codeforces.com/api/user.status?handle=${this.username}&from=1&count=100`)
+          .then(res => this.update(res['data']['result']))
+          .catch(err => { console.log(err) });
         },
         getLink(problem){
           return `https://codeforces.com/${problem.rating ? 'contest' : 'gym'}/${problem.contestId}`;
