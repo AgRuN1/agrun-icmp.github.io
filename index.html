@@ -13,7 +13,7 @@
           <thead v-if="tasks.length != 0">
             <tr>
               <td>Название</td>
-              <td>Контест</td>
+              <td>Решение</td>
               <td>Язык</td>
               <td>Теги</td>
               <td>Дата</td>
@@ -22,8 +22,8 @@
           <tr v-for="t in tasks">
             <td>{{ t.problem.name }}</td>
             <td>
-              <a v-bind:href="getLink(t.problem)" target="_blank">
-                {{ t.problem.contestId }}
+              <a v-bind:href="getLink(t)" target="_blank">
+                {{ t.id }}
               </a>
             </td>
             <td>{{ t.programmingLanguage }}</td>
@@ -69,8 +69,13 @@
           .then(res => this.update(res['data']['result']))
           .catch(err => { console.log(err) });
         },
-        getLink(problem){
-          return `https://codeforces.com/${problem.rating ? 'contest' : 'gym'}/${problem.contestId}`;
+        getLink(sol){
+          var con_link = `${sol.problem.rating ? 'contest' : 'gym'}/${sol.problem.contestId}`;
+          var sol_link = '';
+          if(sol.problem.rating)
+            sol_link = `submission/${sol.id}`;
+          
+          return `https://codeforces.com/${con_link}/${sol_link}`;
         },
         getDate(sec){
           var opt = v => v < 10 ? '0' + v : v;
